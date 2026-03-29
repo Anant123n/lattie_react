@@ -161,15 +161,25 @@ export default function HistoricalPage() {
             />
 
             <WeatherChart 
-              title="Sunrise & Sunset Times (Decimal Hours)"
+              title="Sunrise & Sunset Times (IST)"
               type="line"
               categories={data.time}
               series={[
-                { name: 'Sunrise (Hr)', data: data.sunrise.map(parseTimeOfDay) },
-                { name: 'Sunset (Hr)', data: data.sunset.map(parseTimeOfDay) }
+                { name: 'Sunrise (IST Hr)', data: data.sunrise.map(d => {
+                    const istStr = d.toLocaleString('en-US', { timeZone: 'Asia/Kolkata', hour12: false });
+                    const pd = new Date(istStr);
+                    return pd.getHours() + (pd.getMinutes() / 60);
+                  }) 
+                },
+                { name: 'Sunset (IST Hr)', data: data.sunset.map(d => {
+                    const istStr = d.toLocaleString('en-US', { timeZone: 'Asia/Kolkata', hour12: false });
+                    const pd = new Date(istStr);
+                    return pd.getHours() + (pd.getMinutes() / 60);
+                  }) 
+                }
               ]}
               colors={['#fbbf24', '#f97316']}
-              yAxisTitle="Hour of Day"
+              yAxisTitle="Hour in IST (Decimal)"
             />
           </div>
         </div>
